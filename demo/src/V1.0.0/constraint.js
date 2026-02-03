@@ -1,7 +1,8 @@
 const constraint = {
      video:{groupId:{ideal:30}},
-     audio:true
+     audio:false
 }
 
 
 export default  constraint
+
