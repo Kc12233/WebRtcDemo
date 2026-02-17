@@ -2,16 +2,18 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import SocketProvider from './SocketProvider/SocketProvider.jsx'
+import 'bootstrap/dist/css/bootstrap.min.css'; 
 import {BrowserRouter } from "react-router-dom"
-
-createRoot(document.getElementById('root')).render(
+import StoreGlobal from './Store/StoreGlobal.jsx'
  
+createRoot(document.getElementById('root')).render(
   
+   <StoreGlobal>  
       <BrowserRouter>
-      
+       
           <App />
       </BrowserRouter>
+      </StoreGlobal>
 
   ,
 )

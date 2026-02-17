@@ -1,0 +1,7 @@
+{
+  "editor.minimap.enabled": false,
+  "editor.fontFamily": "'Fira Code', Consolas, monospace",
+  "editor.fontLigatures": true,
+  "workbench.activityBar.location": "bottom",
+  "workbench.sideBar.location": "left"
+}

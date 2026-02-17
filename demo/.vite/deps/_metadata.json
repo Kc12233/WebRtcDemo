@@ -2,7 +2,7 @@
   "hash": "fbc0d414",
   "configHash": "b56127ed",
   "lockfileHash": "f57a7ae5",
-  "browserHash": "73c5af22",
+  "browserHash": "6c4b5cbe",
   "optimized": {
     "react-countdown": {
       "src": "../../node_modules/react-countdown/dist/index.es.js",
@@ -38,6 +38,12 @@
       "src": "../../node_modules/socket.io-client/build/esm/index.js",
       "file": "socket__io-client.js",
       "fileHash": "b103af0a",
+      "needsInterop": false
+    },
+    "sqids": {
+      "src": "../../node_modules/sqids/esm/sqids.js",
+      "file": "sqids.js",
+      "fileHash": "6800f96b",
       "needsInterop": false
     }
   },

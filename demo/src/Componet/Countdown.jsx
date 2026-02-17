@@ -13,9 +13,9 @@ const MyCountdown = ({ minutes = 44, seconds = 4 }) => {
       onComplete={()=>Nav("/")} // هذا أفضل حل
       renderer={({ minutes, seconds }) => (
         <span style={{
-          fontSize: "2rem",
+          fontSize: "1rem",
           fontWeight: "700",
-          color: "#4f46e5",
+          color: "#fff",
           fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif"
         }}>
           {minutes}:{seconds < 10 ? `0${seconds}` : seconds}

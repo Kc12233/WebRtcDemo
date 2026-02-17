@@ -11,11 +11,10 @@ const SocketProvider = ({children }) => {
             socket.removeAllListeners()
         }
       },[])
-      
-    
+     
 
 socket.on("connect_error", (err) => {
-  console.log("Connection failed:", err.message); // e.g. "Invalid token"
+  console.log("Connection failed:", err.message); 
 });
   return (
     <>{children}</>
@@ -23,3 +22,5 @@ socket.on("connect_error", (err) => {
 }
 
 export default SocketProvider
+
+ 

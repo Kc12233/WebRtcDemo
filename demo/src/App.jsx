@@ -1,18 +1,22 @@
 import React from 'react'
 import {Routes,Route } from "react-router-dom"
 import SocketProvider from './SocketProvider/SocketProvider'
+import Waves from './waves/Waves'
+import Fire from './Componet/Fire'
+import Test from './Test'
+ 
  
 
 const Room =  React.lazy(()=>import("./Componet/Room"))
-const CreaRoom =  React.lazy(()=>import("./Componet/CreaRoom"))
 
 const App = () => {
 
 
   return (
     <Routes>
-       <Route path='/' element={<CreaRoom/>}/>
-       <Route path='/room/:id/:time/:name' element={<>
+     
+       
+       <Route path='/' element={<>
         
         <React.Suspense fallback={<div>waiting </div>}>
         <SocketProvider> 
@@ -21,8 +25,10 @@ const App = () => {
         </React.Suspense>
       
         </>}/>
+        <Route path='/t' element={<Fire/>}/>
+        <Route path='/test' element={<Test/>}/>
+        
     </Routes>
-
 
 
   )

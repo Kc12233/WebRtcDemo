@@ -1,15 +1,44 @@
-import iceConfiguration from "./iceConfiguration";
+/*!
+ * PeerSetup.js
+ * -------------------------------------------------------------
+ * WebRTC Peer Connection Utility
+ * -------------------------------------------------------------
+ * Author: Ghaith Nahdi
+ * License: MIT
+ * 
+ * Description:
+ *  This class simplifies the setup of WebRTC peer connections
+ *  for browser-to-browser video chat applications. It handles:
+ *    - Local camera/mic initialization
+ *    - Adding local and remote tracks
+ *    - Buffering and adding ICE candidates
+ *    - Creating and answering offers
+ *    - Graceful cleanup of resources
+ * 
+ * Usage:
+ *    import PeerSetup from './PeerSetup';
+ *    const peerSetup = new PeerSetup(localVideoRef, peerRef, remoteVideoRef);
+ *    await peerSetup._intializCamera();
+ * -------------------------------------------------------------
+ */
+
+
+
+
+
+import iceConfiguration from "./iceConfiguration";  
 import constraint from "./constraint";
-// reuse component
+
 class PeerSetup{
  
     constructor (localVideoRef,peer,remoteVideoRef) {
-        // this.peer = peer || pass something here
-        this.peer = peer   
+   
+        this.peer = peer   || new RTCPeerConnection(iceConfiguration)
         this.localVideoRef = localVideoRef
         this.remoteVideoRef = remoteVideoRef 
         this.localStream = null
         this.buffer = []
+      // should be work here  this._intializCamera()
      
     } 
 
@@ -26,7 +55,7 @@ class PeerSetup{
      
         this.buffer.forEach(async(ice)=>{
         await this.peer.current.addIceCandidate(new RTCIceCandidate(ice));
-        console.log("✅ ICE candidate added successfully from buffer")
+        console.log("✅ ICE candidate eat it  successfully from buffer")
         })
         this.buffer = []
         }
@@ -48,9 +77,10 @@ class PeerSetup{
     }
 
     close(){
-        console.log("clean up the function ...")
+        const D = new Date()
+        console.log("clean up the function ...",D.getHours(),":",D.getMinutes())
         this.localStream?.getTracks().forEach(track=>track.stop())
-     
+         // track
         if(this.localVideoRef){
 
             this.localVideoRef.srcObject = null 
@@ -67,18 +97,19 @@ class PeerSetup{
 
          }
          this.localStream = null
-         // this good clean up .?
+        
          
     }
     
     addlocaltracks(){
      this.localStream.getTracks().forEach(track => {
             this.peer.current.addTrack(track,this.localStream)
-            console.log("sucess")
+            
         });
     }
    
     addremotetracks(){
+       
       this.peer.current.ontrack  = (event)=>{
         
         this.remoteVideoRef.current.srcObject  = event.streams[0]
@@ -87,6 +118,7 @@ class PeerSetup{
 
     async CreateOffer() {
     try {
+      
         const offer = await this.peer.current.createOffer();
         await this.peer.current.setLocalDescription(offer);
 
@@ -99,8 +131,8 @@ class PeerSetup{
     }
 
     async CreateAnswer(offer){
-        try{
-      
+        try{ 
+          // should be the offer parse things  
         await  this.peer.current.setRemoteDescription(new RTCSessionDescription(offer))             
         const answer =  await  this.peer.current.createAnswer()
         await  this.peer.current.setLocalDescription(answer)
@@ -111,10 +143,10 @@ class PeerSetup{
         }
     }
 
- async MakeConnectionAB (answerpleasework)  {
+ async MakeConnectionAB (setRemoteAnswer)  {
  try {
-          await this.peer.current.setRemoteDescription(answerpleasework);
-      console.log("✅✅✅✅ A got remote answer, connection is ready!");
+          await this.peer.current.setRemoteDescription(setRemoteAnswer);
+          console.log("✅✅✅✅ A got remote answer, connection is ready!");
 
 
      
@@ -126,12 +158,7 @@ class PeerSetup{
 
  }
 
-      
-
-
-
-
-
+    
   async addIceF(data){
     try {
      
@@ -143,8 +170,41 @@ class PeerSetup{
         console.error("❌ Failed to add ICE candidate:", err);
     }
 }
+ 
+async shareScreen (){
+        const newStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+        const newTrack = newStream.getVideoTracks()[0];
 
-    
+        // replace track in PeerConnection
+        const sender = this.peer.current.getSenders().find(s => s.track.kind === "video");
+        sender.replaceTrack(newTrack);
+
+        newTrack.onended = async() => {
+            console.log("Screen sharing has stopped.");
+            // Perform cleanup or update UI
+            await this.returnToscreen()
+            };
+
+
+}
+   async returnToscreen (){
+        const newStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        const newTrack = newStream.getVideoTracks()[0];
+
+        // replace track in PeerConnection
+        const sender = this.peer.current.getSenders().find(s => s.track.kind === "video");
+        sender.replaceTrack(newTrack);
+
+        // event to track the screen if stoped sharing
+
+} 
+
+async ping(){
+    console.log("here the ping establish")
+}
+
+
+
 }
 
 export default PeerSetup
