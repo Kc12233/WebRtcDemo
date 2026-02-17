@@ -16,7 +16,7 @@ const app = express();
 const httpServer = createServer(app)
 const io  = new Server(httpServer,{
     cors:{
-        origin:"https://web-rtc-demo-three.vercel.app"
+      origin:"http://localhost:5173"
     }
 })
  
@@ -335,6 +335,7 @@ httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
  
+
 
 
 
